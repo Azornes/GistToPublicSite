@@ -42,10 +42,10 @@ function extractGistId(input) {
     return null;
 }
 
-// Funkcja do formatowania daty
+// Function to format date
 function formatDate(dateString) {
     const date = new Date(dateString);
-    return date.toLocaleDateString('pl-PL', {
+    return date.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -86,14 +86,14 @@ async function loadGist() {
     const input = gistInput.value;
     
     if (!input) {
-        showError('Proszę wpisać ID lub URL Gista');
+        showError('Please enter Gist ID or URL');
         return;
     }
     
     const gistId = extractGistId(input);
     
     if (!gistId) {
-        showError('Nieprawidłowy format ID lub URL Gista');
+        showError('Invalid Gist ID or URL format');
         return;
     }
     
@@ -105,11 +105,11 @@ async function loadGist() {
         
         if (!response.ok) {
             if (response.status === 404) {
-                throw new Error('Gist nie został znaleziony. Sprawdź czy ID jest poprawne.');
+                throw new Error('Gist not found. Please check if the ID is correct.');
             } else if (response.status === 403) {
-                throw new Error('Przekroczono limit żądań API. Spróbuj ponownie za chwilę.');
+                throw new Error('API rate limit exceeded. Please try again later.');
             } else {
-                throw new Error(`Błąd HTTP: ${response.status}`);
+                throw new Error(`HTTP error: ${response.status}`);
             }
         }
         
@@ -117,7 +117,7 @@ async function loadGist() {
         displayGist(gistData);
         
     } catch (error) {
-        showError(`Błąd podczas ładowania Gista: ${error.message}`);
+        showError(`Error loading Gist: ${error.message}`);
     } finally {
         setLoading(false);
     }
@@ -127,11 +127,11 @@ async function loadGist() {
 function displayGist(gistData) {
     hideAllSections();
     
-    // Wypełnianie informacji
-    const title = gistData.description || 'Bez tytułu';
+    // Fill information
+    const title = gistData.description || 'Untitled';
     gistTitle.textContent = title;
     
-    gistAuthor.textContent = gistData.owner ? gistData.owner.login : 'Anonimowy';
+    gistAuthor.textContent = gistData.owner ? gistData.owner.login : 'Anonymous';
     gistCreated.textContent = formatDate(gistData.created_at);
     
     const files = Object.values(gistData.files);
@@ -182,7 +182,7 @@ function createFileCard(file) {
     
     const copyBtn = document.createElement('button');
     copyBtn.className = 'copy-btn';
-    copyBtn.textContent = '📋 Kopiuj';
+    copyBtn.textContent = '📋 Copy';
     copyBtn.onclick = () => copyToClipboard(file.content, copyBtn);
     rightSection.appendChild(copyBtn);
     
@@ -209,7 +209,7 @@ async function copyToClipboard(text, button) {
     try {
         await navigator.clipboard.writeText(text);
         const originalText = button.textContent;
-        button.textContent = '✓ Skopiowano';
+        button.textContent = '✓ Copied';
         button.classList.add('copied');
         
         setTimeout(() => {
@@ -217,7 +217,7 @@ async function copyToClipboard(text, button) {
             button.classList.remove('copied');
         }, 2000);
     } catch (err) {
-        showError('Nie udało się skopiować do schowka');
+        showError('Failed to copy to clipboard');
     }
 }
 
@@ -349,18 +349,18 @@ async function fetchGistFile(gistId, fileType) {
     
     const id = extractGistId(gistId);
     if (!id) {
-        throw new Error(`Nieprawidłowy format ID Gista dla ${fileType}`);
+        throw new Error(`Invalid Gist ID format for ${fileType}`);
     }
     
     const response = await fetch(`https://api.github.com/gists/${id}`);
     
     if (!response.ok) {
         if (response.status === 404) {
-            throw new Error(`Gist ${fileType} nie został znaleziony`);
+            throw new Error(`${fileType} Gist not found`);
         } else if (response.status === 403) {
-            throw new Error('Przekroczono limit żądań API');
+            throw new Error('API rate limit exceeded');
         } else {
-            throw new Error(`Błąd HTTP ${response.status} dla ${fileType}`);
+            throw new Error(`HTTP error ${response.status} for ${fileType}`);
         }
     }
     
@@ -393,7 +393,7 @@ async function loadPreview() {
     const jsGistId = jsGistInput.value.trim();
     
     if (!htmlGistId) {
-        showError('Proszę podać przynajmniej HTML Gist ID');
+        showError('Please provide at least HTML Gist ID');
         return;
     }
     
@@ -407,7 +407,7 @@ async function loadPreview() {
         const jsContent = jsGistId ? await fetchGistFile(jsGistId, 'JS') : null;
         
         if (!htmlContent) {
-            throw new Error('Nie znaleziono pliku HTML w podanym Giście');
+            throw new Error('HTML file not found in the provided Gist');
         }
         
         // Utwórz tablice plików dla renderPreview
@@ -421,7 +421,7 @@ async function loadPreview() {
         previewContainer.classList.remove('hidden');
         
     } catch (error) {
-        showError(`Błąd podczas ładowania preview: ${error.message}`);
+        showError(`Error loading preview: ${error.message}`);
         previewContainer.classList.add('hidden');
     } finally {
         setLoading(false, loadPreviewBtn);
@@ -446,7 +446,7 @@ function renderPreview(htmlContent, cssFiles = [], jsFiles = []) {
         ).join('\n');
         
         fullHTML = `<!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -494,13 +494,13 @@ async function loadSingleGist() {
     const gistId = singleGistInput.value.trim();
     
     if (!gistId) {
-        showError('Proszę podać ID Gista');
+        showError('Please provide Gist ID');
         return;
     }
     
     const id = extractGistId(gistId);
     if (!id) {
-        showError('Nieprawidłowy format ID Gista');
+        showError('Invalid Gist ID format');
         return;
     }
     
@@ -512,11 +512,11 @@ async function loadSingleGist() {
         
         if (!response.ok) {
             if (response.status === 404) {
-                throw new Error('Gist nie został znaleziony');
+                throw new Error('Gist not found');
             } else if (response.status === 403) {
-                throw new Error('Przekroczono limit żądań API');
+                throw new Error('API rate limit exceeded');
             } else {
-                throw new Error(`Błąd HTTP ${response.status}`);
+                throw new Error(`HTTP error ${response.status}`);
             }
         }
         
@@ -551,7 +551,7 @@ async function loadSingleGist() {
         }
         
         if (!htmlContent) {
-            throw new Error('Nie znaleziono pliku HTML w Giście. Upewnij się, że Gist zawiera plik .html lub .htm');
+            throw new Error('HTML file not found in Gist. Make sure the Gist contains a .html or .htm file');
         }
         
         // Renderuj preview z tablicami plików (każdy plik = osobny tag <style> lub <script>)
@@ -569,7 +569,7 @@ async function loadSingleGist() {
         }
         
     } catch (error) {
-        showError(`Błąd podczas ładowania Gista: ${error.message}`);
+        showError(`Error loading Gist: ${error.message}`);
         previewContainer.classList.add('hidden');
     } finally {
         setLoading(false, loadSingleGistBtn);
@@ -587,15 +587,15 @@ function toggleFullscreen() {
     isPreviewMaximized = !isPreviewMaximized;
     
     if (isPreviewMaximized) {
-        // Włącz tryb maximized - ukryj wszystko poza preview
+        // Enable maximized mode - hide everything except preview
         document.body.classList.add('preview-maximized');
         fullscreenPreviewBtn.textContent = '⮾';
-        fullscreenPreviewBtn.title = 'Wyjdź z pełnego widoku';
+        fullscreenPreviewBtn.title = 'Exit full view';
     } else {
-        // Wyłącz tryb maximized - przywróć normalny widok
+        // Disable maximized mode - restore normal view
         document.body.classList.remove('preview-maximized');
         fullscreenPreviewBtn.textContent = '⛶';
-        fullscreenPreviewBtn.title = 'Pełny widok';
+        fullscreenPreviewBtn.title = 'Full view';
     }
 }
 
