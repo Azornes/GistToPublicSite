@@ -14,8 +14,8 @@ Instead of hosting a private repository (which requires a paid GitHub Pro plan f
 Try these example projects to see the Live Preview in action:
 
 - 🏠 **[Main Page](https://azornes.github.io/GistToPublicSite/)** - Home page with all features
-- 🎮 **[Tetris Game](https://azornes.github.io/GistToPublicSite/#/LivePreview/b6c690256541efd8ea50b6bc2c322921)** - Classic Tetris with colorful blocks
-- 🐍 **[Snake Game](https://azornes.github.io/GistToPublicSite/#/LivePreview/f8971bd3c3105bf1b90c5a955c6a0626)** - Retro Snake game
+- 🎮 **[Tetris Game](https://azornes.github.io/GistToPublicSite/#/LivePreview/b6c690256541efd8ea50b6bc2c322921)** - Classic Tetris with colorful blocks by [kubowania](https://github.com/kubowania/Tetris)
+- 🐍 **[Snake Game](https://azornes.github.io/GistToPublicSite/#/LivePreview/f8971bd3c3105bf1b90c5a955c6a0626)** - Retro Snake game by [okaychen](https://github.com/okaychen/RetroSnake)
 
 **Click any link above to see how HTML5 games can be hosted using Gists!**
 
