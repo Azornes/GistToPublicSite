@@ -1,172 +1,172 @@
 # 📝 Gist Viewer
 
-Prosta aplikacja webowa do wyświetlania zawartości GitHub Gistów. Idealne rozwiązanie do hostowania prywatnej treści na publicznej stronie!
+A simple web application for displaying GitHub Gist content. Perfect solution for hosting private content on a public website!
 
-## 🎯 Pomysł
+## 🎯 The Idea
 
-Zamiast hostować prywatne repozytorium (co wymaga płatnego planu GitHub Pro dla GitHub Pages), możesz:
-- Utworzyć **publiczne repozytorium** z tą stroną (GitHub Pages działa za darmo ✅)
-- Przechowywać swoją **treść w Gistach** (mogą być publiczne lub secret)
-- Udostępnić link do strony z parametrem `?gist=ID`
+Instead of hosting a private repository (which requires a paid GitHub Pro plan for GitHub Pages), you can:
+- Create a **public repository** with this page (GitHub Pages works for free ✅)
+- Store your **content in Gists** (they can be public or secret)
+- Share a link to the page with the `?gist=ID` parameter
 
-## ✨ Funkcjonalności
+## ✨ Features
 
-### 📄 Tryb Pojedynczego Gista
-- 🔍 Pobieranie i wyświetlanie plików z GitHub Gist
-- 📋 Kopiowanie zawartości plików jednym kliknięciem
-- 👀 Podgląd wszystkich plików z Gista
-- 🔗 Obsługa pełnych URLi lub samych ID Gistów
+### 📄 Single Gist Mode
+- 🔍 Fetching and displaying files from GitHub Gist
+- 📋 Copy file contents with one click
+- 👀 Preview all files from the Gist
+- 🔗 Support for full URLs or just Gist IDs
 
-### 🚀 Tryb Live Preview
-- 🌐 Połączenie HTML + CSS + JS z różnych Gistów w jedną działającą stronę
-- ⚡ Live rendering w iframe
-- 🎨 Oddzielne Gisty dla HTML, CSS i JS (CSS i JS opcjonalne)
-- 🔄 Odświeżanie preview jednym kliknięciem
-- 📱 Pełna responsywność strony
+### 🚀 Live Preview Mode
+- 🌐 Combine HTML + CSS + JS from different Gists into one working page
+- ⚡ Live rendering in iframe
+- 🎨 Separate Gists for HTML, CSS, and JS (CSS and JS optional)
+- 🔄 Refresh preview with one click
+- 📱 Full page responsiveness
 
-### Ogólne
-- 🎨 Nowoczesny, responsywny design
-- 🌙 Ciemny motyw
-- ⚡ Szybkie ładowanie
+### General
+- 🎨 Modern, responsive design
+- 🌙 Dark theme
+- ⚡ Fast loading
 - 📱 Mobile-friendly
-- 🔄 Możliwość załadowania Gista z parametru URL
+- 🔄 Ability to load Gist from URL parameter
 
-## 🚀 Jak używać
+## 🚀 How to Use
 
-### 📄 Tryb: Pojedynczy Gist
+### 📄 Mode: Single Gist
 
-**Metoda 1: Wpisywanie ręczne**
+**Method 1: Manual Input**
 
-1. Otwórz stronę
-2. Kliknij zakładkę "📄 Pojedynczy Gist"
-3. Wklej ID Gista lub pełny URL w pole tekstowe
-4. Kliknij "Załaduj Gist"
+1. Open the page
+2. Click the "📄 Single Gist" tab
+3. Paste Gist ID or full URL in the text field
+4. Click "Load Gist"
 
-**Przykłady poprawnych formatów:**
+**Examples of valid formats:**
 ```
 abc123def456
 https://gist.github.com/username/abc123def456
 gist.github.com/username/abc123def456
 ```
 
-**Metoda 2: Parametr URL**
+**Method 2: URL Parameter**
 
-Możesz bezpośrednio załadować Gista poprzez URL:
+You can directly load a Gist via URL:
 ```
-https://twoja-domena.github.io/gist-viewer/?gist=abc123def456
-```
-
-### 🚀 Tryb: Live Preview
-
-**Rendering strony z oddzielnych Gistów**
-
-1. Kliknij zakładkę "🚀 Live Preview"
-2. Podaj ID Gista z kodem HTML (wymagane)
-3. Opcjonalnie: Podaj ID Gista z CSS
-4. Opcjonalnie: Podaj ID Gista z JavaScript
-5. Kliknij "Załaduj Live Preview"
-6. Strona automatycznie połączy wszystkie pliki i wyświetli działającą stronę!
-
-**Przypadki użycia:**
-- **Jeden Gist z 3 plikami**: Podaj to samo ID dla HTML, CSS i JS - aplikacja automatycznie wybierze odpowiednie pliki
-- **Trzy oddzielne Gisty**: Każdy z HTML, CSS i JS w osobnym Giście
-- **Tylko HTML**: Podaj tylko HTML Gist - CSS i JS pozostaw puste
-- **HTML + CSS**: Stylizowana strona bez JavaScript
-
-**Przykład:**
-```
-HTML Gist: abc123 (zawiera index.html)
-CSS Gist: def456 (zawiera styles.css)  
-JS Gist: ghi789 (zawiera script.js)
-→ Wynik: Pełna działająca strona internetowa!
+https://your-domain.github.io/gist-viewer/?gist=abc123def456
 ```
 
-## 🔗 Bezpośrednie Linki do Live Preview
+### 🚀 Mode: Live Preview
 
-Możesz udostępnić bezpośredni link, który automatycznie załaduje Gist w trybie pełnoekranowym!
+**Rendering a page from separate Gists**
 
-**Format URL:**
+1. Click the "🚀 Live Preview" tab
+2. Provide Gist ID with HTML code (required)
+3. Optionally: Provide Gist ID with CSS
+4. Optionally: Provide Gist ID with JavaScript
+5. Click "Load Live Preview"
+6. The page will automatically combine all files and display a working page!
+
+**Use Cases:**
+- **One Gist with 3 files**: Provide the same ID for HTML, CSS, and JS - the app will automatically select appropriate files
+- **Three separate Gists**: Each with HTML, CSS, and JS in separate Gists
+- **HTML only**: Provide only HTML Gist - leave CSS and JS empty
+- **HTML + CSS**: Styled page without JavaScript
+
+**Example:**
+```
+HTML Gist: abc123 (contains index.html)
+CSS Gist: def456 (contains styles.css)  
+JS Gist: ghi789 (contains script.js)
+→ Result: Full working website!
+```
+
+## 🔗 Direct Links to Live Preview
+
+You can share a direct link that automatically loads the Gist in fullscreen mode!
+
+**URL Format:**
 ```
 https://azornes.github.io/GistToPublicSite/#/LivePreview/{gist_id}
 ```
 
-**Przykład:**
+**Example:**
 ```
-https://azornes.github.io/GistToPublicSite/#/LivePreview/abc123def456789
+https://azornes.github.io/GistToPublicSite/#/LivePreview/f8971bd3c3105bf1b90c5a955c6a0626
 ```
 
-**Co się dzieje po kliknięciu takiego linku:**
-1. ✅ Strona automatycznie przełącza się na zakładkę "🚀 Live Preview"
-2. ✅ Ładuje podany Gist (HTML, CSS, JS)
-3. ✅ Włącza tryb "fake fullscreen" - cała strona jako preview
-4. ✅ Użytkownik od razu widzi tylko zawartość Gista (bez interfejsu)
+**What happens after clicking such a link:**
+1. ✅ Page automatically switches to "🚀 Live Preview" tab
+2. ✅ Loads the specified Gist (HTML, CSS, JS)
+3. ✅ Enables "fake fullscreen" mode - entire page as preview
+4. ✅ User immediately sees only the Gist content (without interface)
 
-**Aby wyjść z trybu fullscreen:**
-- Kliknij ikonę **⮾** w prawym górnym rogu preview
-- Lub odśwież stronę
+**To exit fullscreen mode:**
+- Click the **⮾** icon in the top right corner of preview
+- Or refresh the page
 
-**Przypadki użycia:**
-- 🎮 Udostępnianie gier HTML5
-- 📱 Demo aplikacji webowych
-- 🎨 Portfolio interaktywnych projektów
-- 📊 Prezentacje i infografiki
-- 🎓 Interaktywne tutoriale
+**Use Cases:**
+- 🎮 Sharing HTML5 games
+- 📱 Web app demos
+- 🎨 Portfolio of interactive projects
+- 📊 Presentations and infographics
+- 🎓 Interactive tutorials
 
-**Uwaga:** 
-- Tryb fullscreen to "fake fullscreen" (CSS-based), więc pasek adresu przeglądarki pozostaje widoczny
-- To zapewnia bezpieczeństwo - użytkownik zawsze wie na jakiej stronie jest
-- Różni się od prawdziwego fullscreen (F11) który ukrywa cały interfejs przeglądarki
+**Note:** 
+- Fullscreen mode is "fake fullscreen" (CSS-based), so the browser address bar remains visible
+- This ensures security - user always knows which site they're on
+- Different from true fullscreen (F11) which hides the entire browser interface
 
-## 🔒 Prywatność
+## 🔒 Privacy
 
-### Secret Gisty
-- Utwórz "Secret" Gist na GitHub (nie "Public")
-- Secret Gisty nie są indeksowane przez wyszukiwarki
-- Dostępne tylko dla osób znających pełne ID
-- Wystarczy udostępnić link z ID Gista
+### Secret Gists
+- Create a "Secret" Gist on GitHub (not "Public")
+- Secret Gists are not indexed by search engines
+- Accessible only to people who know the full ID
+- Just share the link with the Gist ID
 
-### Jak utworzyć Secret Gist:
-1. Przejdź do https://gist.github.com/
-2. Dodaj pliki
-3. Kliknij **"Create secret gist"** (nie "Create public gist")
-4. Skopiuj ID z URLa (długi losowy ciąg znaków)
+### How to create a Secret Gist:
+1. Go to https://gist.github.com/
+2. Add files
+3. Click **"Create secret gist"** (not "Create public gist")
+4. Copy ID from URL (long random string)
 
-## 💻 Technologie
+## 💻 Technologies
 
-- **HTML5** - struktura
-- **CSS3** - stylizacja (gradient, animacje, responsywność)
-- **Vanilla JavaScript** - logika (bez zewnętrznych zależności!)
-- **GitHub Gist API** - pobieranie danych
+- **HTML5** - structure
+- **CSS3** - styling (gradient, animations, responsiveness)
+- **Vanilla JavaScript** - logic (no external dependencies!)
+- **GitHub Gist API** - data fetching
 
-## 📦 Deployment na GitHub Pages
+## 📦 Deployment on GitHub Pages
 
-1. **Fork lub sklonuj to repozytorium**
+1. **Fork or clone this repository**
    ```bash
-   git clone https://github.com/twoj-username/gist-viewer.git
+   git clone https://github.com/your-username/gist-viewer.git
    ```
 
-2. **Push do GitHub**
+2. **Push to GitHub**
    ```bash
    git add .
    git commit -m "Initial commit"
    git push origin main
    ```
 
-3. **Włącz GitHub Pages**
-   - Przejdź do Settings → Pages
+3. **Enable GitHub Pages**
+   - Go to Settings → Pages
    - Source: Deploy from branch
    - Branch: `main` / `(root)`
-   - Zapisz
+   - Save
 
-4. **Gotowe!** Strona będzie dostępna pod:
+4. **Done!** The page will be available at:
    ```
-   https://twoj-username.github.io/nazwa-repo/
+   https://your-username.github.io/repo-name/
    ```
 
-## 🎨 Customizacja
+## 🎨 Customization
 
-### Zmiana kolorów
-Edytuj zmienne CSS w pliku `style.css`:
+### Changing Colors
+Edit CSS variables in `style.css`:
 ```css
 :root {
     --primary-color: #6366f1;
@@ -176,89 +176,89 @@ Edytuj zmienne CSS w pliku `style.css`:
 }
 ```
 
-### Zmiana języka
-Aktualnie interfejs jest po polsku. Aby zmienić na inny język, edytuj teksty w plikach:
-- `index.html` - etykiety i placeholdery
-- `script.js` - komunikaty błędów
+### Changing Language
+Currently the interface is in Polish. To change to another language, edit texts in files:
+- `index.html` - labels and placeholders
+- `script.js` - error messages
 
-## 📝 Przykłady użycia
+## 📝 Usage Examples
 
-### Przypadek 1: Blog/Notatki
-- **Tryb**: Pojedynczy Gist
-- Każdy wpis = osobny Gist
-- Link do strony: `yoursite.com/?gist=blog-post-1`
-- Łatwa edycja w GitHub Gist
+### Case 1: Blog/Notes
+- **Mode**: Single Gist
+- Each post = separate Gist
+- Link to page: `yoursite.com/?gist=blog-post-1`
+- Easy editing in GitHub Gist
 
-### Przypadek 2: Portfolio kodu
-- **Tryb**: Pojedynczy Gist
-- Różne projekty/snippety w Gistach
-- Jedna strona do prezentacji wszystkich
-- Profesjonalny wygląd
+### Case 2: Code Portfolio
+- **Mode**: Single Gist
+- Different projects/snippets in Gists
+- One page to present everything
+- Professional look
 
-### Przypadek 3: Mini-aplikacje webowe
-- **Tryb**: Live Preview
-- HTML w jednym Giście, CSS w drugim, JS w trzecim
-- Modularny kod - łatwa edycja każdego aspektu osobno
-- Live demo bez potrzeby własnego hostingu
-- Idealne dla prototypów i demo
+### Case 3: Mini Web Applications
+- **Mode**: Live Preview
+- HTML in one Gist, CSS in another, JS in third
+- Modular code - easy editing of each aspect separately
+- Live demo without own hosting
+- Ideal for prototypes and demos
 
-### Przypadek 4: Interaktywne tutoriale
-- **Tryb**: Live Preview
-- Kod HTML w Giście (zawartość lekcji)
-- CSS w Giście (stylizacja przykładów)
-- JS w Giście (interaktywne przykłady)
-- Łatwe aktualizacje bez zmiany głównej strony
+### Case 4: Interactive Tutorials
+- **Mode**: Live Preview
+- HTML code in Gist (lesson content)
+- CSS in Gist (example styling)
+- JS in Gist (interactive examples)
+- Easy updates without changing main page
 
-### Przypadek 5: Landing pages
-- **Tryb**: Live Preview
-- Oddzielne Gisty dla struktury, stylu i funkcjonalności
-- Szybkie A/B testing (zmiana Gista = nowa wersja)
-- Współpraca zespołowa (każdy edytuje swój Gist)
+### Case 5: Landing Pages
+- **Mode**: Live Preview
+- Separate Gists for structure, style, and functionality
+- Quick A/B testing (change Gist = new version)
+- Team collaboration (everyone edits their Gist)
 
-### Przypadek 6: Dokumentacja
-- **Tryb**: Pojedynczy Gist
-- Dokumenty w Markdown
-- Szybkie updates bez rebuildu strony
-- Współdzielenie z zespołem
+### Case 6: Documentation
+- **Mode**: Single Gist
+- Documents in Markdown
+- Quick updates without rebuilding page
+- Sharing with team
 
-## 🔧 Struktura projektu
+## 🔧 Project Structure
 
 ```
 gist-viewer/
-├── index.html      # Główna strona HTML
-├── style.css       # Stylizacja
-├── script.js       # Logika aplikacji
-└── README.md       # Dokumentacja
+├── index.html      # Main HTML page
+├── style.css       # Styling
+├── script.js       # Application logic
+└── README.md       # Documentation
 ```
 
-## 🤝 Licencja
+## 🤝 License
 
-MIT License - możesz swobodnie używać i modyfikować!
+MIT License - you can freely use and modify!
 
 ## 💡 Tips & Tricks
 
-1. **Limit API**: GitHub API ma limit 60 żądań/godzinę dla niezalogowanych użytkowników
-2. **Secret Gisty**: Używaj długich, losowych ID dla lepszego bezpieczeństwa
-3. **Szybkie udostępnianie**: Bookmark `yoursite.com/?gist=` i dodawaj ID na końcu
-4. **Mobile**: Strona działa świetnie na telefonach!
+1. **API Limit**: GitHub API has a limit of 60 requests/hour for unauthenticated users
+2. **Secret Gists**: Use long, random IDs for better security
+3. **Quick Sharing**: Bookmark `yoursite.com/?gist=` and add ID at the end
+4. **Mobile**: The page works great on phones!
 
-## 🐛 Znane ograniczenia
+## 🐛 Known Limitations
 
-- Brak syntax highlighting (można dodać bibliotekę jak Prism.js lub highlight.js)
-- Limit 60 żądań/godzinę dla GitHub API (można zwiększyć używając Personal Access Token)
-- Brak edycji plików (tylko odczyt)
+- No syntax highlighting (can add library like Prism.js or highlight.js)
+- 60 requests/hour limit for GitHub API (can increase using Personal Access Token)
+- No file editing (read-only)
 
-## 🎯 Przyszłe ulepszenia
+## 🎯 Future Improvements
 
-- [ ] Syntax highlighting dla kodu
-- [ ] Ciemny/jasny motyw (przełącznik)
-- [ ] Historia ostatnio oglądanych Gistów
-- [x] Live preview dla HTML/CSS/JS ✅
-- [ ] Pobieranie plików
-- [ ] Edytor kodu inline
-- [ ] Eksport połączonego HTML
-- [ ] Wsparcie dla bibliotek CDN (automatyczne dodawanie)
+- [ ] Syntax highlighting for code
+- [ ] Dark/light theme (toggle)
+- [ ] History of recently viewed Gists
+- [x] Live preview for HTML/CSS/JS ✅
+- [ ] File downloads
+- [ ] Inline code editor
+- [ ] Combined HTML export
+- [ ] CDN library support (automatic adding)
 
 ---
 
-**Stworzono z ❤️ dla społeczności GitHub**
+**Created with ❤️ for the GitHub community**
