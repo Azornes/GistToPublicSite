@@ -546,29 +546,25 @@ async function loadSingleGist() {
     }
 }
 
-// Funkcja do przełączania trybu pełnoekranowego
+// Stan trybu maximized (fake fullscreen)
+let isPreviewMaximized = false;
+
+// Funkcja do przełączania trybu maximized (fake fullscreen bez browser fullscreen)
 function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-        // Wejdź w tryb pełnoekranowy
-        previewContainer.requestFullscreen().catch(err => {
-            showError(`Nie udało się przejść w tryb pełnoekranowy: ${err.message}`);
-        });
+    isPreviewMaximized = !isPreviewMaximized;
+    
+    if (isPreviewMaximized) {
+        // Włącz tryb maximized - ukryj wszystko poza preview
+        document.body.classList.add('preview-maximized');
+        fullscreenPreviewBtn.textContent = '⮾';
+        fullscreenPreviewBtn.title = 'Wyjdź z pełnego widoku';
     } else {
-        // Wyjdź z trybu pełnoekranowego
-        document.exitFullscreen();
+        // Wyłącz tryb maximized - przywróć normalny widok
+        document.body.classList.remove('preview-maximized');
+        fullscreenPreviewBtn.textContent = '⛶';
+        fullscreenPreviewBtn.title = 'Pełny widok';
     }
 }
-
-// Zmiana ikony przycisku fullscreen w zależności od stanu
-document.addEventListener('fullscreenchange', () => {
-    if (document.fullscreenElement) {
-        fullscreenPreviewBtn.textContent = '⮾'; // Ikona "compress" w trybie fullscreen
-        fullscreenPreviewBtn.title = 'Wyjdź z pełnego ekranu';
-    } else {
-        fullscreenPreviewBtn.textContent = '⛶'; // Ikona "expand" normalnie
-        fullscreenPreviewBtn.title = 'Pełny ekran';
-    }
-});
 
 // Zmodyfikowana funkcja setLoading aby obsługiwać różne przyciski
 function setLoading(isLoading, button = loadBtn) {

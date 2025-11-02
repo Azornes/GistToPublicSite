@@ -566,51 +566,55 @@ footer a:hover {
     display: block;
 }
 
-/* Fullscreen mode - iframe rozciąga się na pełny ekran */
-.preview-container:fullscreen {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+/* Tryb maximized (fake fullscreen) - ukryj wszystko poza preview */
+body.preview-maximized header,
+body.preview-maximized .tabs,
+body.preview-maximized .sub-tabs,
+body.preview-maximized .input-section,
+body.preview-maximized footer,
+body.preview-maximized .error-section,
+body.preview-maximized .gist-info,
+body.preview-maximized .files-section {
+    display: none !important;
 }
 
-.preview-container:fullscreen #previewFrame {
-    flex: 1;
+body.preview-maximized {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+body.preview-maximized .container {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+body.preview-maximized main {
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+}
+
+body.preview-maximized .preview-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+}
+
+body.preview-maximized #previewFrame {
     height: 100%;
 }
 
-/* Ukryj header w trybie fullscreen - czysty widok strony */
-.preview-container:fullscreen .preview-header {
-    display: none;
-}
-
-/* Wsparcie dla różnych przeglądarek */
-.preview-container:-webkit-full-screen {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
-
-.preview-container:-webkit-full-screen #previewFrame {
-    flex: 1;
-    height: 100%;
-}
-
-.preview-container:-webkit-full-screen .preview-header {
-    display: none;
-}
-
-.preview-container:-moz-full-screen {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
-
-.preview-container:-moz-full-screen #previewFrame {
-    flex: 1;
-    height: 100%;
-}
-
-.preview-container:-moz-full-screen .preview-header {
+/* Opcjonalnie: ukryj header w trybie maximized jeśli chcesz */
+body.preview-maximized .preview-header {
     display: none;
 }
 
