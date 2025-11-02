@@ -81,6 +81,42 @@ JS Gist: ghi789 (zawiera script.js)
 → Wynik: Pełna działająca strona internetowa!
 ```
 
+## 🔗 Bezpośrednie Linki do Live Preview
+
+Możesz udostępnić bezpośredni link, który automatycznie załaduje Gist w trybie pełnoekranowym!
+
+**Format URL:**
+```
+https://azornes.github.io/GistToPublicSite/#/LivePreview/{gist_id}
+```
+
+**Przykład:**
+```
+https://azornes.github.io/GistToPublicSite/#/LivePreview/abc123def456789
+```
+
+**Co się dzieje po kliknięciu takiego linku:**
+1. ✅ Strona automatycznie przełącza się na zakładkę "🚀 Live Preview"
+2. ✅ Ładuje podany Gist (HTML, CSS, JS)
+3. ✅ Włącza tryb "fake fullscreen" - cała strona jako preview
+4. ✅ Użytkownik od razu widzi tylko zawartość Gista (bez interfejsu)
+
+**Aby wyjść z trybu fullscreen:**
+- Kliknij ikonę **⮾** w prawym górnym rogu preview
+- Lub odśwież stronę
+
+**Przypadki użycia:**
+- 🎮 Udostępnianie gier HTML5
+- 📱 Demo aplikacji webowych
+- 🎨 Portfolio interaktywnych projektów
+- 📊 Prezentacje i infografiki
+- 🎓 Interaktywne tutoriale
+
+**Uwaga:** 
+- Tryb fullscreen to "fake fullscreen" (CSS-based), więc pasek adresu przeglądarki pozostaje widoczny
+- To zapewnia bezpieczeństwo - użytkownik zawsze wie na jakiej stronie jest
+- Różni się od prawdziwego fullscreen (F11) który ukrywa cały interfejs przeglądarki
+
 ## 🔒 Prywatność
 
 ### Secret Gisty
