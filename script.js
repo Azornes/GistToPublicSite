@@ -383,7 +383,20 @@ async function fetchGistFile(gistId, fileType) {
         targetFile = files[0];
     }
     
-    return targetFile ? targetFile.content : null;
+    if (!targetFile) {
+        return null;
+    }
+    
+    // If file is truncated or too large, fetch from raw_url
+    if (targetFile.truncated || !targetFile.content || targetFile.size > 1000000) {
+        const rawResponse = await fetch(targetFile.raw_url);
+        if (!rawResponse.ok) {
+            throw new Error(`Failed to fetch raw file: ${rawResponse.status}`);
+        }
+        return await rawResponse.text();
+    }
+    
+    return targetFile.content;
 }
 
 // Główna funkcja ładowania Live Preview
