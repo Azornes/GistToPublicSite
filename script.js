@@ -669,7 +669,7 @@ async function loadSingleGist() {
                     // Przekonwertuj nazwę pliku: images_blue_block.png.base64.txt -> images/blue_block.png
                     const originalPath = file.filename
                         .replace('.base64.txt', '')  // Usuń .base64.txt
-                        .replace(/_/g, '/');          // Zamień _ na /
+                        .replace('_', '/');           // Zamień TYLKO PIERWSZY _ na /
                     
                     // Określ MIME type na podstawie rozszerzenia
                     const extension = originalPath.split('.').pop().toLowerCase();
