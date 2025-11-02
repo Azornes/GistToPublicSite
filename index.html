@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gist Viewer - Wyświetl pliki z GitHub Gist</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 Gist Viewer</h1>
+            <p class="subtitle">Wyświetl pliki z GitHub Gist</p>
+        </header>
+
+        <main>
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="single">📄 Pojedynczy Gist</button>
+                <button class="tab-btn" data-tab="preview">🚀 Live Preview</button>
+            </div>
+
+            <!-- Single Gist Tab -->
+            <section id="singleTab" class="tab-content active">
+                <div class="input-section">
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="gistInput" 
+                            placeholder="Wklej ID lub URL Gista (np. abc123def456 lub https://gist.github.com/user/abc123)"
+                            autocomplete="off"
+                        >
+                        <button id="loadBtn" class="primary-btn">
+                            <span class="btn-text">Załaduj Gist</span>
+                            <span class="loader"></span>
+                        </button>
+                    </div>
+                    <p class="hint">💡 Możesz wkleić pełny URL lub samo ID Gista</p>
+                </div>
+            </section>
+
+            <!-- Live Preview Tab -->
+            <section id="previewTab" class="tab-content">
+                <!-- Sub-tabs dla Live Preview -->
+                <div class="sub-tabs">
+                    <button class="sub-tab-btn active" data-subtab="single">🎯 Jeden Gist</button>
+                    <button class="sub-tab-btn" data-subtab="multiple">⚙️ Oddzielne Gisty</button>
+                </div>
+
+                <!-- Single Gist Sub-tab -->
+                <section id="singleGistSubtab" class="sub-tab-content active">
+                    <div class="input-section">
+                        <h3 style="margin-bottom: 10px;">Szybka opcja: Jeden Gist</h3>
+                        <p class="hint" style="text-align: left; margin-bottom: 15px;">
+                            Podaj ID Gista zawierającego pliki HTML, CSS i JS - aplikacja automatycznie znajdzie wszystkie pliki
+                        </p>
+                        <div class="input-group">
+                            <input 
+                                type="text" 
+                                id="singleGist" 
+                                placeholder="ID Gista z plikami HTML/CSS/JS"
+                                autocomplete="off"
+                            >
+                            <button id="loadSingleGistBtn" class="primary-btn">
+                                <span class="btn-text">🚀 Załaduj</span>
+                                <span class="loader"></span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Multiple Gists Sub-tab -->
+                <section id="multipleGistsSubtab" class="sub-tab-content">
+                    <div class="input-section">
+                        <h3 style="margin-bottom: 10px;">Zaawansowane: Oddzielne Gisty</h3>
+                        <p class="hint" style="text-align: left; margin-bottom: 15px;">
+                            Podaj oddzielne ID dla każdego typu pliku (CSS i JS opcjonalne)
+                        </p>
+                    
+                        <div class="preview-inputs">
+                        <div class="preview-input-group">
+                            <label for="htmlGist">📄 HTML Gist ID:</label>
+                            <input 
+                                type="text" 
+                                id="htmlGist" 
+                                placeholder="ID Gista z plikiem HTML"
+                                autocomplete="off"
+                            >
+                        </div>
+
+                        <div class="preview-input-group">
+                            <label for="cssGist">🎨 CSS Gist ID:</label>
+                            <input 
+                                type="text" 
+                                id="cssGist" 
+                                placeholder="ID Gista z plikiem CSS (opcjonalne)"
+                                autocomplete="off"
+                            >
+                        </div>
+
+                        <div class="preview-input-group">
+                            <label for="jsGist">⚡ JS Gist ID:</label>
+                            <input 
+                                type="text" 
+                                id="jsGist" 
+                                placeholder="ID Gista z plikiem JS (opcjonalne)"
+                                autocomplete="off"
+                            >
+                        </div>
+                    </div>
+
+                            <button id="loadPreviewBtn" class="primary-btn" style="width: 100%; margin-top: 20px;">
+                                <span class="btn-text">🚀 Załaduj Preview</span>
+                                <span class="loader"></span>
+                            </button>
+
+                            <p class="hint" style="margin-top: 15px;">
+                                💡 Możesz podać tylko HTML Gist, CSS i JS są opcjonalne<br>
+                                Gisty mogą zawierać jeden lub więcej plików - wybierzemy odpowiednie
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Live Preview Container -->
+                <div id="previewContainer" class="preview-container hidden">
+                    <div class="preview-header">
+                        <h3>🌐 Live Preview</h3>
+                        <div style="display: flex; gap: 10px;">
+                            <button id="fullscreenPreview" class="icon-btn" title="Pełny ekran">⛶</button>
+                            <button id="refreshPreview" class="icon-btn" title="Odśwież">🔄</button>
+                        </div>
+                    </div>
+                    <iframe id="previewFrame" sandbox="allow-scripts"></iframe>
+                </div>
+            </section>
+
+            <section id="errorSection" class="error-section hidden">
+                <div class="error-box">
+                    <span class="error-icon">⚠️</span>
+                    <p id="errorMessage"></p>
+                </div>
+            </section>
+
+            <section id="gistInfo" class="gist-info hidden">
+                <div class="info-card">
+                    <h2 id="gistTitle"></h2>
+                    <div class="meta-info">
+                        <span class="meta-item">
+                            <strong>Autor:</strong> <span id="gistAuthor"></span>
+                        </span>
+                        <span class="meta-item">
+                            <strong>Utworzono:</strong> <span id="gistCreated"></span>
+                        </span>
+                        <span class="meta-item">
+                            <strong>Plików:</strong> <span id="fileCount"></span>
+                        </span>
+                    </div>
+                    <p id="gistDescription"></p>
+                </div>
+            </section>
+
+            <section id="filesSection" class="files-section hidden">
+                <h3>Pliki:</h3>
+                <div id="filesContainer"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Stworzono z wykorzystaniem <a href="https://docs.github.com/en/rest/gists" target="_blank">GitHub Gist API</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
