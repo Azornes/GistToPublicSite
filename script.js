@@ -737,10 +737,33 @@ async function loadSingleGist() {
         );
         
         const jsFilesWithContent = await Promise.all(
-            jsFiles.map(async (file) => ({
-                filename: file.filename,
-                content: await getFileContent(file)
-            }))
+            jsFiles.map(async (file) => {
+                let content = await getFileContent(file);
+                
+                // Zamień również obrazki w JavaScript (.src = "images/...")
+                if (Object.keys(imageMap).length > 0) {
+                    // Zamień .src = "path" oraz ["src"] = "path"
+                    content = content.replace(/\.src\s*=\s*["']([^"']+)["']/gi, (match, imagePath) => {
+                        if (imageMap[imagePath]) {
+                            return `.src = "${imageMap[imagePath]}"`;
+                        }
+                        return match;
+                    });
+                    
+                    // Zamień również ["src"] = "path"
+                    content = content.replace(/\["src"\]\s*=\s*["']([^"']+)["']/gi, (match, imagePath) => {
+                        if (imageMap[imagePath]) {
+                            return `["src"] = "${imageMap[imagePath]}"`;
+                        }
+                        return match;
+                    });
+                }
+                
+                return {
+                    filename: file.filename,
+                    content: content
+                };
+            })
         );
         
         // Renderuj preview z tablicami plików (każdy plik = osobny tag <style> lub <script>)
