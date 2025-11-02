@@ -646,6 +646,44 @@ async function loadSingleGist() {
             }
         });
         
+        // Znajdź wszystkie pliki .base64.txt (obrazki)
+        const base64ImageFiles = files.filter(f => f.filename.endsWith('.base64.txt'));
+        
+        // Załaduj zawartość wszystkich plików .base64.txt i stwórz mapę obrazków
+        const imageMap = {};
+        if (base64ImageFiles.length > 0) {
+            await Promise.all(
+                base64ImageFiles.map(async (file) => {
+                    // Przekonwertuj nazwę pliku: images_blue_block.png.base64.txt -> images/blue_block.png
+                    const originalPath = file.filename
+                        .replace('.base64.txt', '')  // Usuń .base64.txt
+                        .replace(/_/g, '/');          // Zamień _ na /
+                    
+                    // Określ MIME type na podstawie rozszerzenia
+                    const extension = originalPath.split('.').pop().toLowerCase();
+                    const mimeTypes = {
+                        'png': 'image/png',
+                        'jpg': 'image/jpeg',
+                        'jpeg': 'image/jpeg',
+                        'gif': 'image/gif',
+                        'svg': 'image/svg+xml',
+                        'webp': 'image/webp'
+                    };
+                    const mimeType = mimeTypes[extension] || 'image/png';
+                    
+                    // Załaduj zawartość base64
+                    const base64Content = await getFileContent(file);
+                    
+                    // Stwórz data URL
+                    const dataUrl = `data:${mimeType};base64,${base64Content.trim()}`;
+                    
+                    // Dodaj do mapy (zarówno z / jak i bez dla kompatybilności)
+                    imageMap[originalPath] = dataUrl;
+                    imageMap[originalPath.replace(/^images\//, '')] = dataUrl; // Również bez images/
+                })
+            );
+        }
+        
         // HTML: Użyj index.html jeśli istnieje, w przeciwnym razie pierwszy plik HTML
         if (htmlFiles.length > 0) {
             const indexFile = htmlFiles.find(f => f.filename.toLowerCase() === 'index.html');
@@ -657,12 +695,45 @@ async function loadSingleGist() {
             throw new Error('HTML file not found in Gist. Make sure the Gist contains a .html or .htm file');
         }
         
+        // Zamień wszystkie src obrazków na data URLs (jeśli są jakieś obrazki w mapie)
+        if (Object.keys(imageMap).length > 0) {
+            htmlContent = htmlContent.replace(/src=["']([^"']+)["']/gi, (match, imagePath) => {
+                // Sprawdź czy ten obrazek jest w mapie
+                if (imageMap[imagePath]) {
+                    return `src="${imageMap[imagePath]}"`;
+                }
+                return match; // Jeśli nie ma w mapie, zostaw bez zmian
+            });
+            
+            // Zamień również w CSS background-image: url(...)
+            htmlContent = htmlContent.replace(/url\(["']?([^"')]+)["']?\)/gi, (match, imagePath) => {
+                if (imageMap[imagePath]) {
+                    return `url("${imageMap[imagePath]}")`;
+                }
+                return match;
+            });
+        }
+        
         // Pobierz zawartość wszystkich plików CSS i JS (obsługa truncated files)
         const cssFilesWithContent = await Promise.all(
-            cssFiles.map(async (file) => ({
-                filename: file.filename,
-                content: await getFileContent(file)
-            }))
+            cssFiles.map(async (file) => {
+                let content = await getFileContent(file);
+                
+                // Zamień również obrazki w CSS
+                if (Object.keys(imageMap).length > 0) {
+                    content = content.replace(/url\(["']?([^"')]+)["']?\)/gi, (match, imagePath) => {
+                        if (imageMap[imagePath]) {
+                            return `url("${imageMap[imagePath]}")`;
+                        }
+                        return match;
+                    });
+                }
+                
+                return {
+                    filename: file.filename,
+                    content: content
+                };
+            })
         );
         
         const jsFilesWithContent = await Promise.all(
