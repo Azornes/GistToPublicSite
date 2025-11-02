@@ -409,6 +409,21 @@ function initSubTabs() {
     });
 }
 
+// Pomocnicza funkcja do pobierania zawartości pliku (obsługuje truncated files)
+async function getFileContent(file) {
+    // If file is truncated or too large, fetch from raw_url
+    if (file.truncated || !file.content || file.size > 1000000) {
+        const rawResponse = await fetch(file.raw_url, {
+            headers: getAuthHeaders()
+        });
+        if (!rawResponse.ok) {
+            throw new Error(`Failed to fetch raw file ${file.filename}: ${rawResponse.status}`);
+        }
+        return await rawResponse.text();
+    }
+    return file.content;
+}
+
 // Funkcja do pobierania pliku z Gista
 async function fetchGistFile(gistId, fileType) {
     if (!gistId || gistId.trim() === '') {
@@ -634,15 +649,31 @@ async function loadSingleGist() {
         // HTML: Użyj index.html jeśli istnieje, w przeciwnym razie pierwszy plik HTML
         if (htmlFiles.length > 0) {
             const indexFile = htmlFiles.find(f => f.filename.toLowerCase() === 'index.html');
-            htmlContent = indexFile ? indexFile.content : htmlFiles[0].content;
+            const targetHtmlFile = indexFile || htmlFiles[0];
+            htmlContent = await getFileContent(targetHtmlFile);
         }
         
         if (!htmlContent) {
             throw new Error('HTML file not found in Gist. Make sure the Gist contains a .html or .htm file');
         }
         
+        // Pobierz zawartość wszystkich plików CSS i JS (obsługa truncated files)
+        const cssFilesWithContent = await Promise.all(
+            cssFiles.map(async (file) => ({
+                filename: file.filename,
+                content: await getFileContent(file)
+            }))
+        );
+        
+        const jsFilesWithContent = await Promise.all(
+            jsFiles.map(async (file) => ({
+                filename: file.filename,
+                content: await getFileContent(file)
+            }))
+        );
+        
         // Renderuj preview z tablicami plików (każdy plik = osobny tag <style> lub <script>)
-        renderPreview(htmlContent, cssFiles, jsFiles);
+        renderPreview(htmlContent, cssFilesWithContent, jsFilesWithContent);
         previewContainer.classList.remove('hidden');
         
         // Jeśli flaga auto-fullscreen jest włączona, włącz tryb maximized
