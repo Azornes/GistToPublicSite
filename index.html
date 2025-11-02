@@ -13,6 +13,32 @@
             <p class="subtitle">Display files from GitHub Gist</p>
         </header>
 
+        <!-- GitHub Token Settings -->
+        <div class="token-section">
+            <details class="token-details">
+                <summary>⚙️ API Settings (Optional - Increase rate limit)</summary>
+                <div class="token-content">
+                    <p class="hint" style="margin-bottom: 10px;">
+                        GitHub API limit: <strong>60 requests/hour</strong> (without token) or <strong>5000/hour</strong> (with token)
+                    </p>
+                    <div class="token-input-group">
+                        <input 
+                            type="password" 
+                            id="githubToken" 
+                            placeholder="Paste your GitHub Personal Access Token here"
+                            autocomplete="off"
+                        >
+                        <button id="saveTokenBtn" class="secondary-btn">💾 Save</button>
+                        <button id="clearTokenBtn" class="secondary-btn">🗑️ Clear</button>
+                    </div>
+                    <p class="hint" style="margin-top: 10px; font-size: 0.85em;">
+                        🔒 Token is stored locally in your browser. <a href="https://github.com/settings/tokens/new?scopes=gist&description=Gist%20Viewer" target="_blank">Create token</a> (needs only "gist" scope)
+                    </p>
+                    <div id="tokenStatus" class="token-status"></div>
+                </div>
+            </details>
+        </div>
+
         <main>
             <!-- Tabs -->
             <div class="tabs">

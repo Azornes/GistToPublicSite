@@ -14,11 +14,74 @@ const gistCreated = document.getElementById('gistCreated');
 const fileCount = document.getElementById('fileCount');
 const gistDescription = document.getElementById('gistDescription');
 
+// Elementy tokena GitHub
+const githubTokenInput = document.getElementById('githubToken');
+const saveTokenBtn = document.getElementById('saveTokenBtn');
+const clearTokenBtn = document.getElementById('clearTokenBtn');
+const tokenStatus = document.getElementById('tokenStatus');
+
+// Klucz dla localStorage
+const TOKEN_STORAGE_KEY = 'github_gist_token';
+
+// Funkcje obsługi tokena
+function saveToken() {
+    const token = githubTokenInput.value.trim();
+    if (token) {
+        localStorage.setItem(TOKEN_STORAGE_KEY, token);
+        showTokenStatus('✓ Token saved successfully!', 'success');
+        githubTokenInput.value = '••••••••••••••••';
+    } else {
+        showTokenStatus('⚠ Please enter a valid token', 'error');
+    }
+}
+
+function loadToken() {
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (token) {
+        githubTokenInput.value = '••••••••••••••••';
+        showTokenStatus('✓ Token loaded from storage', 'success');
+    }
+}
+
+function clearToken() {
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    githubTokenInput.value = '';
+    showTokenStatus('✓ Token cleared', 'success');
+    setTimeout(() => {
+        tokenStatus.textContent = '';
+        tokenStatus.className = 'token-status';
+    }, 2000);
+}
+
+function showTokenStatus(message, type) {
+    tokenStatus.textContent = message;
+    tokenStatus.className = `token-status ${type}`;
+}
+
+function getAuthHeaders() {
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+    if (token) {
+        return {
+            'Authorization': `Bearer ${token}`
+        };
+    }
+    return {};
+}
+
 // Event listeners
 loadBtn.addEventListener('click', loadGist);
 gistInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         loadGist();
+    }
+});
+
+// Event listeners dla tokena
+saveTokenBtn.addEventListener('click', saveToken);
+clearTokenBtn.addEventListener('click', clearToken);
+githubTokenInput.addEventListener('focus', () => {
+    if (githubTokenInput.value === '••••••••••••••••') {
+        githubTokenInput.value = '';
     }
 });
 
@@ -101,7 +164,9 @@ async function loadGist() {
     hideAllSections();
     
     try {
-        const response = await fetch(`https://api.github.com/gists/${gistId}`);
+        const response = await fetch(`https://api.github.com/gists/${gistId}`, {
+            headers: getAuthHeaders()
+        });
         
         if (!response.ok) {
             if (response.status === 404) {
@@ -223,6 +288,9 @@ async function copyToClipboard(text, button) {
 
 // Obsługa parametrów URL i hash routing
 window.addEventListener('DOMContentLoaded', () => {
+    // Załaduj token z localStorage jeśli istnieje
+    loadToken();
+    
     // Inicjalizacja zakładek
     initTabs();
     initSubTabs();
@@ -352,7 +420,9 @@ async function fetchGistFile(gistId, fileType) {
         throw new Error(`Invalid Gist ID format for ${fileType}`);
     }
     
-    const response = await fetch(`https://api.github.com/gists/${id}`);
+    const response = await fetch(`https://api.github.com/gists/${id}`, {
+        headers: getAuthHeaders()
+    });
     
     if (!response.ok) {
         if (response.status === 404) {
@@ -389,7 +459,9 @@ async function fetchGistFile(gistId, fileType) {
     
     // If file is truncated or too large, fetch from raw_url
     if (targetFile.truncated || !targetFile.content || targetFile.size > 1000000) {
-        const rawResponse = await fetch(targetFile.raw_url);
+        const rawResponse = await fetch(targetFile.raw_url, {
+            headers: getAuthHeaders()
+        });
         if (!rawResponse.ok) {
             throw new Error(`Failed to fetch raw file: ${rawResponse.status}`);
         }
@@ -521,7 +593,9 @@ async function loadSingleGist() {
     hideAllSections();
     
     try {
-        const response = await fetch(`https://api.github.com/gists/${id}`);
+        const response = await fetch(`https://api.github.com/gists/${id}`, {
+            headers: getAuthHeaders()
+        });
         
         if (!response.ok) {
             if (response.status === 404) {
