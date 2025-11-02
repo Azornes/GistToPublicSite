@@ -528,6 +528,9 @@ async function loadPreview() {
     }
 }
 
+// Zmienna do przechowywania aktualnego Blob URL
+let currentBlobUrl = null;
+
 // Funkcja do renderowania preview z tablicami plików
 // cssFiles i jsFiles to tablice obiektów {filename, content}
 function renderPreview(htmlContent, cssFiles = [], jsFiles = []) {
@@ -585,8 +588,17 @@ ${scriptTags}
         }
     }
     
-    // Renderuj w iframe
-    previewFrame.srcdoc = fullHTML;
+    // Zwolnij stary Blob URL jeśli istnieje
+    if (currentBlobUrl) {
+        URL.revokeObjectURL(currentBlobUrl);
+    }
+    
+    // Utwórz nowy Blob URL (zamiast srcdoc, żeby uniknąć CSP restrictions)
+    const blob = new Blob([fullHTML], { type: 'text/html' });
+    currentBlobUrl = URL.createObjectURL(blob);
+    
+    // Renderuj w iframe używając Blob URL
+    previewFrame.src = currentBlobUrl;
 }
 
 // Funkcja do ładowania Single Gist (automatycznie znajdzie HTML, CSS, JS)
