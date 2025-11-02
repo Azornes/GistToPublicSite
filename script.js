@@ -221,19 +221,39 @@ async function copyToClipboard(text, button) {
     }
 }
 
-// Obsługa parametrów URL (opcjonalne - załadowanie Gista z URL)
+// Obsługa parametrów URL i hash routing
 window.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const gistParam = urlParams.get('gist');
-    
-    if (gistParam) {
-        gistInput.value = gistParam;
-        loadGist();
-    }
-    
     // Inicjalizacja zakładek
     initTabs();
     initSubTabs();
+    
+    // Obsługa hash routing: #/LivePreview/{gist_id}
+    const hash = window.location.hash;
+    const livePreviewMatch = hash.match(/#\/LivePreview\/([a-f0-9]+)/i);
+    
+    if (livePreviewMatch) {
+        const gistId = livePreviewMatch[1];
+        
+        // Przełącz na zakładkę Live Preview
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelector('[data-tab="preview"]').classList.add('active');
+        document.getElementById('previewTab').classList.add('active');
+        
+        // Ustaw input i załaduj Gist z auto-fullscreen
+        singleGistInput.value = gistId;
+        shouldAutoFullscreen = true;
+        loadSingleGist();
+    } else {
+        // Standardowa obsługa query params (?gist=...)
+        const urlParams = new URLSearchParams(window.location.search);
+        const gistParam = urlParams.get('gist');
+        
+        if (gistParam) {
+            gistInput.value = gistParam;
+            loadGist();
+        }
+    }
 });
 
 // ===== LIVE PREVIEW FUNCTIONALITY =====
@@ -538,6 +558,16 @@ async function loadSingleGist() {
         renderPreview(htmlContent, cssFiles, jsFiles);
         previewContainer.classList.remove('hidden');
         
+        // Jeśli flaga auto-fullscreen jest włączona, włącz tryb maximized
+        if (shouldAutoFullscreen) {
+            shouldAutoFullscreen = false; // Resetuj flagę
+            setTimeout(() => {
+                if (!isPreviewMaximized) {
+                    toggleFullscreen();
+                }
+            }, 100); // Małe opóźnienie aby preview zdążył się załadować
+        }
+        
     } catch (error) {
         showError(`Błąd podczas ładowania Gista: ${error.message}`);
         previewContainer.classList.add('hidden');
@@ -548,6 +578,9 @@ async function loadSingleGist() {
 
 // Stan trybu maximized (fake fullscreen)
 let isPreviewMaximized = false;
+
+// Flaga dla automatycznego fullscreen (z URL)
+let shouldAutoFullscreen = false;
 
 // Funkcja do przełączania trybu maximized (fake fullscreen bez browser fullscreen)
 function toggleFullscreen() {
