@@ -672,10 +672,18 @@ async function loadSingleGist() {
                     const mimeType = mimeTypes[extension] || 'image/png';
                     
                     // Załaduj zawartość base64
-                    const base64Content = await getFileContent(file);
+                    let base64Content = await getFileContent(file);
+                    base64Content = base64Content.trim();
                     
-                    // Stwórz data URL
-                    const dataUrl = `data:${mimeType};base64,${base64Content.trim()}`;
+                    // Sprawdź czy base64Content już jest data URL (zaczyna się od "data:")
+                    let dataUrl;
+                    if (base64Content.startsWith('data:')) {
+                        // Już jest pełny data URL, użyj bezpośrednio
+                        dataUrl = base64Content;
+                    } else {
+                        // Tylko czysty base64, dodaj prefix
+                        dataUrl = `data:${mimeType};base64,${base64Content}`;
+                    }
                     
                     // Dodaj do mapy (zarówno z / jak i bez dla kompatybilności)
                     imageMap[originalPath] = dataUrl;
