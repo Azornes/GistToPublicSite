@@ -9,6 +9,16 @@ Instead of hosting a private repository (which requires a paid GitHub Pro plan f
 - Store your **content in Gists** (they can be public or secret)
 - Share a link to the page with the `?gist=ID` parameter
 
+## 🎮 Live Demo - Example Projects
+
+Try these example projects to see the Live Preview in action:
+
+- 🏠 **[Main Page](https://azornes.github.io/GistToPublicSite/)** - Home page with all features
+- 🎮 **[Tetris Game](https://azornes.github.io/GistToPublicSite/#/LivePreview/b6c690256541efd8ea50b6bc2c322921)** - Classic Tetris with colorful blocks
+- 🐍 **[Snake Game](https://azornes.github.io/GistToPublicSite/#/LivePreview/f8971bd3c3105bf1b90c5a955c6a0626)** - Retro Snake game
+
+**Click any link above to see how HTML5 games can be hosted using Gists!**
+
 ## ✨ Features
 
 ### 📄 Single Gist Mode
