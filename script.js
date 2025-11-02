@@ -740,9 +740,9 @@ async function loadSingleGist() {
             jsFiles.map(async (file) => {
                 let content = await getFileContent(file);
                 
-                // Zamień również obrazki w JavaScript (.src = "images/...")
+                // Zamień również obrazki w JavaScript
                 if (Object.keys(imageMap).length > 0) {
-                    // Zamień .src = "path" oraz ["src"] = "path"
+                    // 1. Zamień .src = "path"
                     content = content.replace(/\.src\s*=\s*["']([^"']+)["']/gi, (match, imagePath) => {
                         if (imageMap[imagePath]) {
                             return `.src = "${imageMap[imagePath]}"`;
@@ -750,10 +750,18 @@ async function loadSingleGist() {
                         return match;
                     });
                     
-                    // Zamień również ["src"] = "path"
+                    // 2. Zamień ["src"] = "path"
                     content = content.replace(/\["src"\]\s*=\s*["']([^"']+)["']/gi, (match, imagePath) => {
                         if (imageMap[imagePath]) {
                             return `["src"] = "${imageMap[imagePath]}"`;
+                        }
+                        return match;
+                    });
+                    
+                    // 3. Zamień url(...) w JavaScript (np. w tablicach colors)
+                    content = content.replace(/url\(["']?([^"')]+)["']?\)/gi, (match, imagePath) => {
+                        if (imageMap[imagePath]) {
+                            return `url("${imageMap[imagePath]}")`;
                         }
                         return match;
                     });
