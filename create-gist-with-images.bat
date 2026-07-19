@@ -5,7 +5,7 @@ setlocal enabledelayedexpansion
 :: Create Gist with Base64 Image Conversion
 :: ============================================
 :: Usage: create-gist-with-images.bat [folder_path] [optional_description]
-
+:: Example: create-gist-with-images.bat test-images "test site"
 if "%~1"=="" (
     echo Error: Please provide a folder path
     echo.

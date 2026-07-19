@@ -1,4 +1,7 @@
 // Elementy DOM
+const PreviewLoader = globalThis.GistPreviewLoader;
+if (!PreviewLoader) throw new Error('GistPreviewLoader is required before script.js.');
+
 const gistInput = document.getElementById('gistInput');
 const loadBtn = document.getElementById('loadBtn');
 const errorSection = document.getElementById('errorSection');
@@ -588,6 +591,10 @@ ${scriptTags}
         }
     }
     
+    displayPreviewDocument(fullHTML);
+}
+
+function displayPreviewDocument(fullHTML) {
     // Zwolnij stary Blob URL jeśli istnieje
     if (currentBlobUrl) {
         URL.revokeObjectURL(currentBlobUrl);
@@ -639,8 +646,6 @@ async function loadSingleGist() {
         
         // Znajdź i połącz wszystkie pliki HTML, CSS, JS
         let htmlContent = null;
-        let cssContent = '';
-        let jsContent = '';
         
         // Zbierz wszystkie pliki według typu
         const htmlFiles = [];
@@ -794,8 +799,13 @@ async function loadSingleGist() {
             })
         );
         
-        // Renderuj preview z tablicami plików (każdy plik = osobny tag <style> lub <script>)
-        renderPreview(htmlContent, cssFilesWithContent, jsFilesWithContent);
+        // Odtwórz kolejność zasobów dokładnie z index.html. Pliki niewskazane
+        // przez HTML (np. testy i skrypty Workerów) nie są wykonywane w stronie.
+        const preparedPreview = PreviewLoader.buildPreviewDocument(
+            htmlContent,
+            [...cssFilesWithContent, ...jsFilesWithContent]
+        );
+        displayPreviewDocument(preparedPreview.html);
         previewContainer.classList.remove('hidden');
         
         // Jeśli flaga auto-fullscreen jest włączona, włącz tryb maximized
