@@ -55,7 +55,7 @@
     }
 
     function removeAttribute(attributes, name) {
-        return String(attributes || "").replace(new RegExp(`\\s${name}\\s*=\\s*(?:"[^"]*"|'[^']*'|[^\\s>]+)`, "ig"), "");
+        return String(attributes || "").replace(new RegExp(`\\s${name}(?:\\s*=\\s*(?:"[^"]*"|'[^']*'|[^\\s>]+))?`, "ig"), "");
     }
 
     function escapeAttribute(value) {
@@ -129,7 +129,7 @@
     window.Worker = class GistPreviewWorker extends NativeWorker {
         constructor(url, options) {
             const raw = String(url || "");
-            const key = /^(?:blob:|data:|https?:|\/\/)/i.test(raw) ? "" : normalize(raw);
+            const key = /^(?:blob:|data:|https?:|\\/\\/)/i.test(raw) ? "" : normalize(raw);
             const source = sources[key] || sources[key.split("/").pop()];
             if (!source) {
                 super(url, options);
